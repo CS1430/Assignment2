@@ -45,8 +45,10 @@ FUNCTIONS = [
     ("cost_per_class", 2),
 ]
 
-# (annual cost, credits this semester). The first pair is the guide's example.
+# (annual cost, credits this semester). Examples A and B are in the student guide;
+# the third pair is not.
 TEST_PAIRS = [(14601, 15), (24000, 12), (9876.54, 17)]
+TEST_NAMES = ["Example A", "Example B", "not in the guide"]
 
 TOLERANCE = 0.005  # half a cent
 
@@ -98,6 +100,12 @@ def common_mistake(name, cost, credits, got):
 
 def money(x):
     return "{:.2f}".format(x)
+
+
+def test_tag(cost, credits):
+    """Label a test pair so students can see which test a message is about."""
+    i = TEST_PAIRS.index((cost, credits))
+    return "Test {} of {} ({})".format(i + 1, len(TEST_PAIRS), TEST_NAMES[i])
 
 
 def show_pair(cost, credits, name):
@@ -355,29 +363,29 @@ def main():
         hints = []
         for (cost, credits), res in zip(TEST_PAIRS, entry["results"]):
             want = expected(name, cost, credits)
-            where = show_pair(cost, credits, name)
+            where = "{}: for {}".format(test_tag(cost, credits), show_pair(cost, credits, name))
             kind = res["kind"]
             if kind == "number" and abs(res["value"] - want) <= TOLERANCE:
                 continue
             if kind == "number":
                 got = res["value"]
                 shown = "0" if got == 0 else "{:.4f}".format(got).rstrip("0").rstrip(".")
-                hints.append("For {}, expected {} but got {}".format(where, money(want), shown))
+                hints.append("{}, expected {} but got {}".format(where, money(want), shown))
                 if got == 0:
                     hints.append("Still returning 0? Replace the stub with your calculation.")
                 else:
                     hints.append(common_mistake(name, cost, credits, got)
                                  or "Re-read what this result means in section 7 of the guide, and use the constants.")
             elif kind == "none":
-                hints.append("For {}, expected {} but got None".format(where, money(want)))
+                hints.append("{}, expected {} but got None".format(where, money(want)))
                 hints.append("The function needs to return its answer. Print in main(), not here.")
             elif kind == "text":
-                hints.append("For {}, expected the number {} but got text: {}".format(where, money(want), res["repr"]))
+                hints.append("{}, expected the number {} but got text: {}".format(where, money(want), res["repr"]))
                 hints.append("Return the number itself. Format it as money only when you print it.")
             elif kind == "crash":
-                hints.append("For {}, the function crashed: {}".format(where, res["repr"]))
+                hints.append("{}, the function crashed: {}".format(where, res["repr"]))
             else:
-                hints.append("For {}, expected {} but got {}".format(where, money(want), res["repr"]))
+                hints.append("{}, expected {} but got {}".format(where, money(want), res["repr"]))
             break  # one clear message is better than three
         record(not hints, label, hints, pts=6)
 
@@ -398,11 +406,11 @@ def main():
             if i == 0:
                 transcript = out
             if status == "timeout":
-                crash = ["With cost {} and {} credits, your program never finished.".format(cost, credits),
+                crash = ["{}: with cost {} and {} credits, your program never finished.".format(test_tag(cost, credits), cost, credits),
                          "Make sure Q breaks out of the loop, and that nothing loops forever."]
                 break
             if status == "error":
-                crash = ["With cost {} and {} credits typed in:".format(cost, credits)] + explain_crash(err)
+                crash = ["{}: with cost {} and {} credits typed in:".format(test_tag(cost, credits), cost, credits)] + explain_crash(err)
                 break
             seen = amounts_in(out)
             for name, _ in FUNCTIONS:
@@ -426,7 +434,7 @@ def main():
             if missing:
                 cost, credits, _, _ = missing[0]
                 these = [m for m in missing if m[0] == cost]
-                hints.append("With cost {} and {} credits, these amounts were not found in output:".format(cost, credits))
+                hints.append("{}: with cost {} and {} credits, these amounts were not found in output:".format(test_tag(cost, credits), cost, credits))
                 for _, _, name, want in these:
                     hints.append("    {}  (from {})".format(want, name))
                 hints.append("Each amount must be printed with exactly two decimals, like 97.34.")

@@ -14,7 +14,6 @@ Your wording and menu design are yours. Your numbers must be exact, to the cent.
 |---|---|---|
 | `main.py` | Your program. All of your Python goes here. | **Yes.** The only Python file you edit. |
 | `check.py` | Tests your work and writes `SUBMISSION.txt`. | No. Never. |
-| `AI_NOTES.md` | Your structured AI review. | Yes. Writing, not code. |
 | `README.md` | This page. | No. |
 | `.gitignore`, `.gitattributes` | Git housekeeping. | No. |
 
@@ -55,6 +54,6 @@ The other **10 points** are for your Worth It? extension (menu option 6), graded
 
 1. Commit and push your final `main.py` and `AI_NOTES.md`.
 2. Run `python check.py` one last time, after your final push.
-3. Upload `SUBMISSION.txt` and `AI_NOTES.md` to Assignment 2 in Canvas.
+3. Upload `SUBMISSION.txt`  to Assignment 2 in Canvas.
 4. Answer the reflection questions and the debugging record in Canvas.
 5. Submit your slide deck with your Worth It? screenshots and math explanation.

@@ -22,7 +22,6 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MAIN = os.path.join(HERE, "main.py")
-NOTES = os.path.join(HERE, "AI_NOTES.md")
 RECEIPT = os.path.join(HERE, "SUBMISSION.txt")
 RUN_SECONDS = 10
 
@@ -113,7 +112,6 @@ def show_pair(cost, credits, name):
 # ---------------------------------------------------------------------------
 RESULTS = []   # (status, label, [hint lines], blocking, (earned, possible) or None)
 POINTS_POSSIBLE = 40
-NOTES_OUT = []
 
 
 def record(ok, label, hints=None, blocking=True, pts=None):
@@ -454,9 +452,9 @@ def main():
                     ["So far there is only the template's first commit.",
                      "In Source Control, type a message and click Commit."])
     if ok:
-        rc, dirty, _ = git("status", "--porcelain", "--", "main.py", "AI_NOTES.md")
+        rc, dirty, _ = git("status", "--porcelain", "--", "main.py")
         ok = record(rc == 0 and dirty == "", "Your latest changes are committed",
-                    ["main.py or AI_NOTES.md has changes that are not committed yet.",
+                    ["main.py has changes that are not committed yet.",
                      "Save, then Commit in Source Control, so GitHub has what check.py tested."])
     if ok:
         rc, url, _ = git("remote", "get-url", "origin")
@@ -489,14 +487,6 @@ def main():
             if len(parts) >= 4:
                 commit = {"sha": parts[0], "message": parts[1], "author": parts[2], "date": parts[3]}
 
-    # ---------------- Non-blocking notes ----------------
-    if os.path.isfile(NOTES):
-        with open(NOTES, encoding="utf-8", errors="replace") as fh:
-            if "(write here)" in fh.read():
-                NOTES_OUT.append("AI_NOTES.md still has (write here) placeholders. Fill it in before you submit.")
-    else:
-        NOTES_OUT.append("AI_NOTES.md is missing. Copy it back from the template on GitHub.")
-
     # ---------------- Report ----------------
     report = render_report()
     print(report)
@@ -527,10 +517,6 @@ def render_report():
                 lines.append("   > " + h)
     lines.append("")
     lines.append("POINTS FROM check.py: {} / {}".format(points_earned(), POINTS_POSSIBLE))
-    if NOTES_OUT:
-        lines.append("")
-        for n in NOTES_OUT:
-            lines.append("NOTE: " + n)
     lines.append("")
     return "\n".join(lines)
 

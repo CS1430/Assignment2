@@ -57,3 +57,9 @@ The other **10 points** are for your Worth It? extension (menu option 6), graded
 3. Upload `SUBMISSION.txt`  to Assignment 2 in Canvas.
 4. Answer the reflection questions and the debugging record in Canvas.
 5. Submit your slide deck with your Worth It? screenshots and math explanation.
+
+## Credits:
+
+Daniel Rhode v1-10/10/2026
+
+Jacob F., CS1430 Student - Proofreading and technical specification improvements

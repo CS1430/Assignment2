@@ -52,7 +52,7 @@ The other **10 points** are for your Worth It? extension (menu option 6), graded
 
 ## Turning it in
 
-1. Commit and push your final `main.py` and `AI_NOTES.md`.
+1. Commit and push your final `main.py`.
 2. Run `python check.py` one last time, after your final push.
 3. Upload `SUBMISSION.txt`  to Assignment 2 in Canvas.
 4. Answer the reflection questions and the debugging record in Canvas.
